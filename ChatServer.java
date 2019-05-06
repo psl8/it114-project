@@ -68,14 +68,17 @@ class ChatHandler extends Thread{
                             if (objIn.getMessage().trim().equals("BYE")) {
                                 done = true;
                             }
+                            break;
                         case PRIVATE:
+                            out.writeObject(objIn);
                             for (ChatHandler h : handlers) {
-                                if (h.name.equals(objIn.getDestination())
+                                if (h.name.equals(objIn.getDestination()))
                                     h.out.writeObject(objIn);
                             }
                             if (objIn.getMessage().trim().equals("BYE")) {
                                 done = true;
                             }
+                            break;
                     }
                 }
             }

@@ -88,16 +88,20 @@ class ChatPanel extends Panel implements ActionListener, Runnable {
                 }
             } else if (ae.getSource() == tf) {
                 if (connected) {
+                    String temp = tf.getText();
                     if (list.getSelectedItem() == null) {
-                        String temp = tf.getText();
                         d1 = new DataObject(frame.getTitle());
-                        d1.setMessage(temp);
-                        oos.writeObject(d1);
-                        tf.setText("");
+                    } else {
+                        d1 = new DataObject(frame.getTitle(), MessageType.PRIVATE);
+                        d1.setDestination(list.getSelectedItem());
                     }
+                    d1.setMessage(temp);
+                    oos.writeObject(d1);
+                    tf.setText("");
                 } else {
                     String temp = tf.getText();
                     frame.setTitle(temp);
+                    tf.setText("");
                 }
             }
         } catch (UnknownHostException uhe) {
