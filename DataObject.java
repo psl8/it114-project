@@ -2,21 +2,13 @@ import java.io.*;
 import java.util.*;
 
 public class DataObject implements Serializable{
-    private String username;
 	private String message;
-    MessageType type;
+    private MessageType type;
     private ArrayList<String> list;
     private String destination;
 
-	DataObject(String username){
+	DataObject(MessageType type){
 		message = "";
-        this.username = username;
-        type = MessageType.PUBLIC;
-	}
-
-	DataObject(String username, MessageType type){
-		message = "";
-        this.username = username;
         this.type = type;
 	}
 
@@ -26,10 +18,6 @@ public class DataObject implements Serializable{
 
 	public void setMessage(String inMessage){
 		message = inMessage;
-	}
-
-	public String getUsername(){
-		return username;
 	}
 
 	public void setDestination(String dest){
@@ -46,6 +34,10 @@ public class DataObject implements Serializable{
 
     public ArrayList<String> getList() {
         return list;
+    }
+
+    public MessageType getType() {
+        return type;
     }
 }
 

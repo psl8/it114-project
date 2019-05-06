@@ -41,9 +41,10 @@ class ChatHandler extends Thread{
                 if (objIn == null) {
                     done = true;
                 } else {
-                    switch (objIn.type) {
+                    switch (objIn.getType()) {
                         case DISCONNECT:
                             done = true;
+                            objIn.setMessage(name);
                             for (ChatHandler h : handlers) {
                                 h.out.writeObject(objIn);
                             }
@@ -53,15 +54,17 @@ class ChatHandler extends Thread{
                             for (ChatHandler h : handlers) {
                                 names.add(h.name);
                             }
-                            DataObject listUpdate = new DataObject("", MessageType.LIST);
+                            DataObject listUpdate = new DataObject(MessageType.LIST);
                             listUpdate.setList(names);
                             out.writeObject(listUpdate);
-                            name = objIn.getUsername();
+                            name = objIn.getMessage();
                             for (ChatHandler h : handlers) {
                                 h.out.writeObject(objIn);
                             }
                             break;
                         case PUBLIC:
+                            String temp = objIn.getMessage();
+                            objIn.setMessage(name + ": " + temp);
                             for (ChatHandler h : handlers) {
                                 h.out.writeObject(objIn);
                             }
@@ -70,6 +73,8 @@ class ChatHandler extends Thread{
                             }
                             break;
                         case PRIVATE:
+                            String temp2 = objIn.getMessage();
+                            objIn.setMessage(name + ": " + temp2);
                             out.writeObject(objIn);
                             for (ChatHandler h : handlers) {
                                 if (h.name.equals(objIn.getDestination()))

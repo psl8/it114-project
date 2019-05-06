@@ -68,7 +68,8 @@ class ChatPanel extends Panel implements ActionListener, Runnable {
                     s = new Socket("127.0.0.1", 3000);
                     oos = new ObjectOutputStream(s.getOutputStream());
                     ois = new ObjectInputStream(s.getInputStream());
-                    d1 = new DataObject(frame.getTitle(), MessageType.CONNECT);
+                    d1 = new DataObject(MessageType.CONNECT);
+                    d1.setMessage(frame.getTitle());
                     oos.writeObject(d1);
                     thread = new Thread(this);
                     thread.start();
@@ -80,7 +81,7 @@ class ChatPanel extends Panel implements ActionListener, Runnable {
                 }
             } else if (ae.getSource() == disconnect) {
                 if (connected) {
-                    d1 = new DataObject(frame.getTitle(), MessageType.DISCONNECT);
+                    d1 = new DataObject(MessageType.DISCONNECT);
                     oos.writeObject(d1);
                     connected = false;
                     connect.setEnabled(true);
@@ -90,9 +91,9 @@ class ChatPanel extends Panel implements ActionListener, Runnable {
                 if (connected) {
                     String temp = tf.getText();
                     if (list.getSelectedItem() == null) {
-                        d1 = new DataObject(frame.getTitle());
+                        d1 = new DataObject(MessageType.PUBLIC);
                     } else {
-                        d1 = new DataObject(frame.getTitle(), MessageType.PRIVATE);
+                        d1 = new DataObject(MessageType.PRIVATE);
                         d1.setDestination(list.getSelectedItem());
                     }
                     d1.setMessage(temp);
@@ -115,19 +116,18 @@ class ChatPanel extends Panel implements ActionListener, Runnable {
         while (connected) {
             try {
                 d2 = (DataObject)ois.readObject();
-                switch (d2.type) {
+                switch (d2.getType()) {
                     case CONNECT:
-                        ta.append(d2.getUsername() + " has connected\n");
-                        list.add(d2.getUsername());
+                        ta.append(d2.getMessage() + " has connected\n");
+                        list.add(d2.getMessage());
                         break;
                     case DISCONNECT:
-                        ta.append(d2.getUsername() + " has disconnected\n");
-                        list.remove(d2.getUsername());
+                        ta.append(d2.getMessage() + " has disconnected\n");
+                        list.remove(d2.getMessage());
                         break;
                     case PUBLIC:
                     case PRIVATE:
-                        String temp = d2.getUsername() + ": " + d2.getMessage();
-                        ta.append(temp + "\n");
+                        ta.append(d2.getMessage() + "\n");
                         break;
                     case LIST:
                         for (String name : d2.getList()) {
