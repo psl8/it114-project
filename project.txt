@@ -1,0 +1,22 @@
+IT 114 Project
+Due: Monday, May 7th, 2019 (last class meeting)
+Use the given files to create a complete chat system. The files you may
+use can be found in: 
+https://web.njit.edu/~theo/courses/it114/download/project/
+
+Points:
+Given files: 30
+Set name of user (username):							40
+	- anything typed into textfield before connecting will be username
+	- add username to title bar of frame
+	- prepend name to all messages
+	- announce entrances and exits
+User should be able to connect and disconnect:					15
+	- user list of all members should update correctly
+
+Private Messages:								15
+	 - if a name is selected on the user list, the message will only be sent
+		to that user
+
+Total points: 100
+If you base your project on code other than the code given in class: 0
